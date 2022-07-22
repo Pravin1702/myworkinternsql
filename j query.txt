@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About</title>
+    <link rel="stylesheet" href="Style4.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnOne').click(() => $('.c2').hide(1000));
+            $('#btnOne').click(() => $('.c3').hide(1000));
+            $('#btnTwo').click(() => $('.c1').hide(1000));
+            $('#btnTwo').click(() => $('.c3').hide(1000));
+            $('#btnThree').click(() => $('.c1').hide(1000));
+            $('#btnThree').click(() => $('.c2').hide(1000));
+
+        })
+    </script>
+</head>
+<body>
+    <div class="Hero4">
+        <nav>
+            <ul>
+                <li><a href="Index1.html">Home</a></li>
+                <li><a href="Page2.html">Skill</a></li>
+                <li><a href="Page3.html">Condact</a></li>
+                <li><a href="Page4.html">About</a></li>
+            </ul>
+        </nav>
+          
+        <div class="about">
+            <h1 class="heading">About</h1>
+            <button id="btnOne">
+                Myself
+            </button>
+            <button id="btnTwo'">
+                Family
+            </button>
+            <button id="btnThree">
+                Friends
+            </button>
+            <p id="p1" class="c1">
+                This is my official Profile website to showcase 
+            my all works related to <br> FullStack development and design.
+            </p>
+            <p class="c2">
+                Father Name : Kumar.D
+		Mother Name : Lokeshwari.K
+		Sister Name : Indhu.K 
+            </p>
+            <p class="c3">
+                Friends Names : Rahul,Musraf,Rishi,Sasu 
+            </p>
+            <form action="" class="form">
+                <input type="text" Name="name" class="input" placeholder="Enter your Name" />
+                <input type="Email" Email="email" class="input" placeholder="Enter your Email id" />
+                <textarea name="message" id="message" cols="30" rows="10" placeholder="Enter your Message"></textarea>
+                <input type="submit" value="SEND" id="SEND" />
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+create table DEPARTMENT
+(Deptname char(20) constraint pk_deptname primary key ,
+Floor varchar(2),
+Phone varchar(15) NOT NULL,
+Mgrid varchar(2))
+
+sp_help DEPARTMENT
+
+create table EMP
+(Empno varchar(4) constraint pk_empno primary key,
+Empname char(15) not null,
+Salary float constraint chk_Prod_price  check(salary>0),
+Deptname char(20) constraint pk_deptnames foreign key references DEPARTMENT(Deptname) not null,
+Bossno varchar(4) not null)
+
+create table ITEM
+(Itemname char(30) constraint pk_itemname primary key,
+Itemtype varchar(1),
+Itemcolor char(10))
+
+create table SALES
+(Salesno varchar(3) constraint pk_salesno primary key,
+Saleqty varchar(1),
+Itemname char(30) constraint fk_itemnames foreign key references ITEM(Itemname) not null,
+Deptname char(20) constraint fk_deptnames foreign key references DEPARTMENT(Deptname) not null)
+
+insert into DEPARTMENT(deptname,floor,phone,Mgrid)values('Management',5,34,1),('Books',1,84,4),('Clothes',2,24,4),('Equipment',3,57,3),('Furniture',4,14,3),
+('Navigation',1,41,3),('Recreation',2,29,4),('Accounting',5,35,5),
+('Purchasing',5,36,7),('Personnal',5,37,9),('Marketing',5,38,2)
+
+insert into EMP values(1,'Alice',75000,'Management','-'),(2,'Ned',45000,'Marketing',1),(3,'Andrew',25000,'Marketing',2),
+(4,'Clare',22000,'Marketing',2),(5,'Todd',38000,'Accounting',1),(6,'Nancy',22000,'Accounting',5),
+(7,'Brier',43000,'purchasing',1),(8,'Sarah',56000,'Purchasing',7),(9,'Shophile',35000,'Personnal',1),
+(10,'Sanjay',15000,'Navigation',3),(11,'Rita',5000,'Books',4),(12,'Gigi',16000,'Clothes',4),
+(13,'Maggie',11000,'Clothes',4),(14,'Paul',15000,'Equipment',3),(15,'James',15000,'Equipment',3),
+(16,'Pat',15000,'Furniture',3),(17,'Mark',15000,'Recreation',3)
+
+insert into ITEM values('pocket knife-nile','E','Brown'),('pocket knife-Avon','E','Brown'),('compass','N','Brown'),('Geo positioning system','N','Brown'),
+('elephant polo stick','R','Bamboo'),('camel saddle','R','Brown'),('sextant','N','Brown'),('Map measure','N','Brown'),
+('Boots snake proof','C','Green'),('pith helmat','C','khaki'),('hat polar explorer','C','White'),('Exploring in 10 essay lessons','B','White'),
+('Hammock','F','khaki'),('How to win foreign friends','B','khaki'),('Map case','E','Brown'),('safari chair','F','khaki'),
+('Safari cooking kit','F','khaki'),('stetson','C','Black'),('tent-2 person','F','khaki'),('tent-8 person','F','khaki')
+
+insert into SALES values(101,2,'Boots snake proof','Clothes'),(102,1,'pith helmat','Clothes'),(103,1,'sextant','Navigation'),
+(104,3,'hat polar explorer','Clothes'),(105,5,'pith helmat','Equipment'),(106,2,'pocket knife-nile','Clothes'),(107,3,'pocket knife-nile','Recreation'),
+(108,1,'compass','Navigation'),(109,2,'Geo positioning system','Navigation'),(110,5,'Map measure','Navigation'),(111,1,'Geo positioning system','Books'),
+(112,1,'sextant','Books'),(113,3,'pocket knife-nile','Books'),(114,1,'pocket knife-nile','Navigation'),(115,1,'pocket knife-nile','Equipment'),
+(116,1,'sextant','Clothes'),(117,1,'sextant','Equipment'),(118,1,'sextant','Recreation'),(119,1,'sextant','Furniture'),(120,1,'pocket knife-nile','Furniture'),
+(121,1,'Exploring in 10 essay lessons','Books'),(122,1,'How to win foreign friends','Books'),(123,1,'compass','Books'),
+(124,1,'pith helmat','Books'),(125,1,'elephant polo stick','Recreation'),(126,1,'camel saddle','Recreation')
+

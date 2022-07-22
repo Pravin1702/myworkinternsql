@@ -1,0 +1,538 @@
+SQL 
+
+create table gamelogin (id int,name varchar(20),age int,password varchar(20))
+
+select * from gamelogin
+
+create table gessword (words varchar(10))
+
+select * from gessword
+
+sp_help gamelogin
+
+--get a word 
+
+create proc_gessword(@uword varchar(10) out)
+as
+begin
+     select * from gessword
+end
+
+--print login data
+
+create proc proc_getlogin
+as
+begin
+ select * from gamelogin
+end
+
+--print insert users
+
+create proc proc_getuser(@uid int,@uname varchar(20),@uage int,@upass varchar(20))
+as
+begin
+insert into gamelogin values (@uid,@uname,@uage,@upass)
+end
+
+exec proc_getuser 101,'Jimu',21,'jimu21'
+
+--count of users
+
+create proc proc_idfind
+as
+begin
+select count(id)'rollnumber' from gamelogin
+end
+
+exec proc_idfind
+
+--checking id and password is currect are not
+
+create proc proc_gamelogincheck(@uid int,@upass varchar(20))
+as
+begin 
+declare @check varchar(10)
+if exists(select * from gamelogin where id=@uid and password=@upass)
+
+       set @check='valid'
+
+else
+
+       set @check='invalid'
+
+select @check
+end
+
+--login check
+
+/*
+create proc proc_gameloginchecks(@uid int,@upass varchar(20))
+as
+begin 
+select count(*) 'Logincheck' from gamelogin where id=@uid and password=@upass
+end
+
+exec proc_gamelogincheck 101,'jimu21'
+*/
+
+--insert the word
+
+create proc proc_giveword(@uword varchar(10))
+as
+begin
+    insert into gessword values ( @uword)
+end
+
+exec proc_giveword 'pull'
+
+select * from gessword
+
+--get a gesssword
+
+create proc proc_gessword(@uword varchar(10) out)
+as
+begin
+     select * from gessword  
+end
+
+exec proc_gessword null
+
+--reset the word
+
+create proc proc_delword(@uword varchar(10))
+as
+begin
+     delete from gessword where words=@uword
+end
+
+exec proc_delword 'pull'
+
+--check word are there in a table
+
+create proc proc_checkword
+as
+begin
+     select count(*)'check word' from gessword
+end
+
+exec proc_checkword
+
+
+=================================================================================================================
+
+C#
+
+using System;
+using gamelib;
+using GameDAL;
+using Game;
+
+namespace GameCowsAndBull
+{
+    class Program
+    {
+        
+        public void GameDis()
+        {
+            int n;
+            Console.WriteLine("Welcome to the GameManu ");
+            Console.WriteLine("1) Register \n2) Login ");
+            Console.WriteLine("Choose an option ");
+            try
+            {
+                n = Convert.ToInt32(Console.ReadLine());
+                if (n == 1)
+                {
+
+                    game g = new game();
+                    gameDAL dal = new gameDAL();
+                    int regester = dal.Register();
+                    if (regester > 0)
+                    {
+                        g.GameManu();
+                    }
+                    else if(regester == 0)
+                    {
+                        Console.Write("Given Input is Wrong");
+                        GameDis();
+                    }
+
+                }
+                else if (n == 2)
+                {
+                    int login;
+                    gameDAL dal = new gameDAL();
+                    User user = Getlogin();
+                    user = dal.Login(user);
+                    if (user.login == "invalid")
+                    {
+                        Console.WriteLine("Invalid username or password");
+                        GameDis();
+                    }
+                    else
+                    {
+                        game g = new game();
+                        g.GameManu();
+
+                    }
+
+                }
+                else
+                {
+                    Console.Write("Given input is wrong ");
+                    GameDis();
+
+                }
+            }
+            catch(FormatException fe)
+            {
+                Console.WriteLine("Given input is Must to provide number");
+                GameDis();
+            }
+        }
+        private User Getlogin()
+        {
+            User user = new User();
+            Console.WriteLine("Enter the id number ");
+            try
+            {
+                user.id = Convert.ToInt32(Console.ReadLine());
+            }
+            catch(FormatException fe)
+            {
+                Console.WriteLine("Given input is Must number");
+                GameDis();
+            }
+            Console.WriteLine("Enter the password ");
+            user.Password = Console.ReadLine();
+            return user;
+        }
+        public static void Main(String[] arg )
+        {
+            new Program().GameDis();
+            Console.ReadKey();
+        }
+    }
+}
+
+======================================================================================
+
+namespace gamelib
+{
+    public class User
+    {
+        public string name { get; set; }
+        public string Password { get; set; }
+        public int id { get; set; }
+        public int Age { get; set; }
+        public string word { get; set; }
+        public string login { get; set; }
+    }
+}
+
+=====================================================================
+
+using gamelib;
+using System;
+using System.Linq;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Data;
+
+
+namespace GameDAL
+{
+
+    public class gameDAL
+    {
+        SqlConnection conn;
+        public gameDAL()
+        {
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conn"].ConnectionString);
+        }
+        public int Register()
+        {
+            gameDAL d = new gameDAL();
+            User u = new User();
+            Console.WriteLine("Enter the name ");
+            u.name = Console.ReadLine();
+            bool containsInt = u.name.Any(char.IsDigit);
+            if (containsInt)
+            {
+                Console.WriteLine("Your UserName should not have Numeric characters");
+                return 0;
+            }
+            Console.WriteLine("Enter your age ");
+            try
+            {
+                u.Age = Convert.ToInt32(Console.ReadLine());
+                return 0;
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine("Given word is Must number");
+            }
+            u.Password = u.name + "" + u.Age;
+            u.id = 101 + d.loginid();
+            Console.WriteLine("Welcome your password is your name and age together () " + u.Password);
+            Console.WriteLine("your id is " + u.id);
+            SqlCommand cmdLogin = new SqlCommand();
+            cmdLogin.Connection = conn;
+            cmdLogin.CommandText = "proc_getuser";
+            cmdLogin.CommandType = CommandType.StoredProcedure;
+            cmdLogin.Parameters.AddWithValue("@uid", u.id);
+            cmdLogin.Parameters.AddWithValue("@uname", u.name);
+            cmdLogin.Parameters.AddWithValue("@uage", u.Age);
+            cmdLogin.Parameters.AddWithValue("@upass", u.Password);
+            conn.Open();
+            int result = cmdLogin.ExecuteNonQuery();
+            if (result > 0)
+                Console.WriteLine("USer created");
+            conn.Close();
+            return result;
+
+        }
+
+        public User Login(User user)
+        {
+            string login = null;
+            SqlCommand cmdLogin = new SqlCommand();
+            cmdLogin.Connection = conn;
+            conn.Open();
+            cmdLogin.CommandText = "proc_gamelogincheck";
+            cmdLogin.CommandType = CommandType.StoredProcedure;
+            cmdLogin.Parameters.AddWithValue("@uid", user.id);
+            cmdLogin.Parameters.AddWithValue("@upass", user.Password);
+            if (conn.State == ConnectionState.Open)
+                conn.Close();
+            conn.Open();
+            SqlDataReader dr = cmdLogin.ExecuteReader();
+            dr.Read();
+            login = dr[0].ToString();
+            conn.Close();
+            user.login = login;
+            return user; ;
+        }
+        public void gword(User user)
+        {
+            SqlCommand cmd = new SqlCommand("proc_giveword");
+            cmd.Connection = conn;
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@uword", SqlDbType.VarChar, 10);
+            cmd.Parameters[0].Value = user.word;
+            conn.Open();
+            int result = cmd.ExecuteNonQuery();
+            if (result > 0)
+                Console.WriteLine("Word insert successfully");
+            conn.Close();
+        }
+        public User gessword(User user)
+        {
+            SqlCommand cmd = new SqlCommand("proc_gessword");
+            string word = "";
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@uword", word);
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            word = dr[0].ToString();
+            conn.Close();
+            user.word = word;
+            return user;
+        }
+        public void delword(User user)
+        {
+            SqlCommand cmd = new SqlCommand("proc_delword");
+            string word = user.word;
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("uword", word);
+            int result = cmd.ExecuteNonQuery();
+            if (result > 0)
+                Console.WriteLine("You Find the word Sucessfully ");
+            conn.Close();
+        }
+        public int checkword()
+        {
+            int temp;
+            SqlCommand cmd = new SqlCommand("proc_checkword");
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            temp = Int32.Parse(dr[0].ToString());
+            conn.Close();
+            return temp;
+        }
+        public int loginid()
+        {
+            int temp;
+            SqlCommand cmd = new SqlCommand("proc_idfind");
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            temp = Int32.Parse(dr[0].ToString());
+            conn.Close();
+            return temp;
+
+        }
+        
+
+    }
+}
+
+==========================================================================
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<connectionStrings>
+		<add name ="conn" connectionString ="Data source=DESKTOP-H5DBBMH\SQLSERVER2019;user id=sa;password=Indhu123@;Initial Catalog=Northwind"/>
+	</connectionStrings>
+</configuration>
+
+=======================================================================================================================
+
+using System;
+using System.Linq;
+using GameDAL;
+using gamelib;
+
+
+namespace Game
+{
+    public class game
+    {
+        public void GameManu()
+        {
+            int n;
+            try
+            {
+                do
+                {
+                    Console.WriteLine("Welcome to the game");
+                    Console.WriteLine("1) Give Word");
+                    Console.WriteLine("2) Guess word");
+                    Console.WriteLine("3) Exit");
+                    Console.WriteLine("Choose an option");
+                    n = Convert.ToInt32(Console.ReadLine());
+                    if (n == 1)
+                    {
+                        game p = new game();
+                        p.fword();
+                    }
+
+                    else if (n == 2)
+                    {
+                        game p = new game();
+                        p.gessword();
+
+                    }
+                    else if (n == 3)
+                    {
+                        Console.WriteLine("Bye...Tata.....!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Given input is wrong");
+                        game p = new game();
+                        p.GameManu();
+                    }
+                } while (n != 3);
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine("OOPS.... Given value is Must Number");
+                GameManu();
+            }
+        }
+
+        public void fword()
+        {
+            game g = new game();
+            User user = new User();
+            gameDAL dal = new gameDAL();
+            Console.WriteLine("Please Enter The Four Letter Word ");
+            user.word = Console.ReadLine();
+            if(user.word.Length != 4)
+            {
+                Console.WriteLine("The Word Should have Four Letter ");
+                fword();
+            }
+            bool containsNum = user.word.Any(char.IsDigit);
+            if (containsNum)
+            {
+                Console.WriteLine("Words should not have Numerical Values");
+                fword();
+            }
+            dal.gword(user);
+            g.GameManu();
+            
+        }
+
+        public void gessword()
+        {
+            User user = new User();
+            gameDAL dal = new gameDAL();
+            int Cows = 0, Bulls = 0, flag = 0;
+            int checkword;
+            checkword = dal.checkword();
+            if (checkword > 0)
+            {
+                user = dal.gessword(user);
+                string str1 = user.word;
+                int len = str1.Length;
+                if (len == 4)
+                {
+
+                    str1 = str1.ToLower();
+                    Console.WriteLine("Enter the Gess Word ");
+                    do
+                    {
+                        String str2 = Console.ReadLine().ToLower();
+                        Cows = 0;
+                        Bulls = 0;
+                        flag = 0;
+                        for (int i = 0; i < len; i++)
+                        {
+                            if (str1[i] == str2[i])
+                            {
+                                Cows++;
+                                flag++;
+                                if (flag == len)
+                                {
+                                    dal.delword(user);
+                                    str1 = null;
+                                }
+                            }
+                            else
+                            {
+                                for (int j = 0; j < len; j++)
+                                {
+                                    if (str1[i] == str2[j])
+                                    {
+                                        Bulls++;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        Console.WriteLine("cows - " + Cows + "  bull - " + Bulls);
+                    } while (Cows != len);
+                }
+            }
+            else if(checkword == 0)
+            {
+                Console.WriteLine("There are not word to find \nFirst give word");
+                GameManu();
+
+            }
+
+        }
+
+    }
+}

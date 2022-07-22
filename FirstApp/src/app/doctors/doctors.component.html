@@ -1,0 +1,21 @@
+
+<!-- Structural directive for iteration -->
+<div *ngFor="let Doctor of Doctors">
+    <!-- <img [src]="Doctor.pic" height="200" width="200"> -->
+    <h1>
+        <hr>
+        {{Doctor.Id}}
+        <br>
+        {{Doctor.name}}
+        <br>
+        {{Doctor.Speciality}}
+        <br>
+        {{Doctor.Experience}}
+        <br>
+        {{Doctor.like}} <i class="fa fa-thumbs-up" aria-hidden="true" (click)="like(Doctor.Id)"></i>
+        <br>
+        <h2>Add Doctor to Appointments{{Doctor.like}} <i class="fa-solid fa-user-doctor" (click)="AddCart(Doctor.Id)"></i></h2>
+
+    </h1>
+  </div>
+  

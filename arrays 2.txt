@@ -1,0 +1,271 @@
+1.
+using System;
+class Data
+{
+    string[] skills = new string[5];
+    public string this[int index]
+    {
+        get { return skills[index]; }
+        set { skills[index] = value ; }
+    }
+    public int this[string sname]
+    {
+        get
+        {
+            int idx = -1;
+            for (int i = 0; i < skills.Length; i++)
+            {
+                if (skills[i] == sname)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+            return idx;
+        }
+    }
+    public Data()
+    {
+
+    }
+    public Data(int id, string name, int age, float phone)
+    {
+        Id = id;
+        Name = name;
+        Age = age;
+        Phone = phone;
+    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public float Phone { get; set; }
+
+    public void PrintEmployeeDetails()
+    {
+        Console.WriteLine($"Employee Id: {Id}");
+        Console.WriteLine($"Employee Name: {Name}");
+        Console.WriteLine($"Employee Age: {Age}");
+        Console.WriteLine($"Employee Phone: {Phone}");
+        Console.WriteLine("Skills are:");
+        for (int i = 0; i < skills.Length; i++)
+        {
+            Console.WriteLine($"{skills[i]}");
+        }
+    }
+}
+
+
+    class Program
+    {
+        void EntryData()
+        {
+            Data data = new Data();
+            data.Id = 101;
+            data.Name = "aslam";
+            data.Age = 22;
+            data.Phone = 9876543210;
+            data[0] = "coding";
+            data[1] = "cooking";
+            data[2] = "racer";
+            data[3] = "cricket";
+            data[4] = "comedy";
+            data.PrintEmployeeDetails();
+        }
+        static void Main(string[] args)
+        {
+            Program program = new Program();
+            prrogram.EntryData();
+            Console.ReadKey();
+        }
+}
+---------------------------------------------------------------------------------------------------
+2.
+    public void Number()
+    {
+        int flag=0;
+        Console.WriteLine("Enter any skills");
+        string k=Console.ReadLine();
+        for (int i = 0; i < skills.Length; i++)
+        {
+            if (k == skills[i])
+            {
+                flag++;
+                break;
+            }
+        }
+        if(flag==1)
+            Console.WriteLine("Employee have the skill");
+        else 
+            Console.WriteLine("Employee not have the skill");
+
+        Console.WriteLine("enter the index number");
+        int n =Convert.ToInt32(Console.ReadLine());
+        if (n >= 0 && n < 5)
+            Console.WriteLine($" Skill name: {skills[n]}");
+        else
+            Console.WriteLine("invalid index number");
+    }
+}
+---------------------------------------------------------------------------------------------------
+3.
+class Data
+{
+    string[] skills = new string[5];
+    public string this[int index]
+    {
+        get { return skills[index]; }
+        set { skills[index] = value; }
+    }
+    public int this[string sname]
+    {
+        get
+        {
+            int idx = -1;
+            for (int i = 0; i < skills.Length; i++)
+            {
+                if (skills[i] == sname)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+            return idx;
+        }
+    }
+    public Data()
+    {
+
+    }
+    public Data(int id, string name, int age, float phone)
+    {
+        Id = id;
+        Name = name;
+        Age = age;
+        Phone = phone;
+    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public float Phone { get; set; }
+
+    public void PrintEmployeeDetails()
+    {
+        Console.WriteLine("Enter emplyee Id");
+        Id = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Enter emplyee Name");
+        Name = Console.ReadLine();
+        Console.WriteLine("Enter emplyee Age");
+        Age = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Enter emplyee Phone");
+        Phone = float.Parse(Console.ReadLine());
+        Console.WriteLine("Enter emplyee Skills");
+        for (int i = 0; i < skills.Length; i++)
+        {
+            skills[i] = Console.ReadLine();
+        }
+        
+        Console.WriteLine($"Employee Id: {Id}");       
+        Console.WriteLine($"Employee Name: {Name}");       
+        Console.WriteLine($"Employee Age: {Age}");       
+        Console.WriteLine($"Employee Phone: {Phone}");     
+        Console.WriteLine("Employee Skills are:");
+        for (int i = 0; i < skills.Length; i++)
+        {
+            Console.WriteLine($"{skills[i]}");
+        }
+    }
+    public void check()
+    {
+        Console.WriteLine("Enter a skill name");
+        string skill_name=Console.ReadLine();
+    }
+}
+class Employee
+{
+    void EntryData()
+    {
+        Data data = new Data();
+        for (int i = 0; i < 5; i++)
+        {
+            data.PrintEmployeeDetails();
+        }
+        data.check();
+    }
+    static void Main(string[] args)
+    {
+        Employee employee = new Employee();
+        employee.EntryData();
+        Console.ReadKey();
+    }
+}
+---------------------------------------------------------------------------------------------------
+4.
+class Program
+{
+    static int findSingle(int[] ar, int ar_size)
+    {
+        int res = ar[0];
+        for (int i = 1; i < ar_size; i++)
+            res = res ^ ar[i];
+
+        return res;
+    }
+    public static void Main()
+    {
+        Console.WriteLine("Enter 11 digit number");
+        int[] a = new int[11];
+        for(int i=0; i<a.Length; i++)
+        {
+            a[i]=Convert.ToInt32(Console.ReadLine());
+        }
+        Console.Write("The number is " + findSingle(a, 11) + " ");
+    }
+}
+---------------------------------------------------------------------------------------------------
+5.
+using System;  
+  public class Palindrome
+   {  
+     public static void Main(string[] args)  
+      {  
+          int n,r,sum=0,temp;    
+          Console.Write("Enter the Number: ");   
+          n = int.Parse(Console.ReadLine());  
+          temp=n;      
+          while(n>0)      
+          {      
+           r=n%10;      
+           sum=(sum*10)+r;      
+           n=n/10;      
+          }      
+          if(temp==sum)      
+           Console.Write("Number is Palindrome.");      
+          else      
+           Console.Write("Number is not Palindrome");     
+    }  
+  }  
+---------------------------------------------------------------------------------------------------
+6.
+using System;
+class Game {
+  static void Main(string arg []) {
+      
+      string str="golf";
+      string str1="glaa";
+      int cows=0,bulls=0;
+      
+      for(int i=0,j=3;i<4;i++,j--)
+      {
+          if(str[i]==str1[i])
+          {
+             cows++;
+          }
+          if(str[i]==str1[j])
+          {
+            bulls++;  
+          }
+        
+      }
+    Console.WriteLine("cows - "+cows+" bulls - "+bulls);
+  }
+}

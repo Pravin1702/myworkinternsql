@@ -1,0 +1,155 @@
+//1)  Create a application that take 2 numbers and find its sum, product and divide the first by second, also supractthe second from the first.
+      //Include another method to find the remainder when the first number is divided by second
+
+
+using System;
+class Program 
+{
+  static void Main(string[] args)
+ {
+    int sum , product , division , subraction , remainder;  
+     
+    Console.WriteLine("Enter a First Number");
+    int num1 = Convert.ToInt32(Console.ReadLine());
+    
+    Console.WriteLine("Enter a Second Number");
+    int num2 = Convert.ToInt32(Console.ReadLine());
+    
+    sum = num1 + num2;
+    product = num1 * num2;
+    division = num1 / num2;
+    subraction = num2 - num1;
+    remainder = num1 % num2;
+    
+    Console.WriteLine("The Sum of Two Numbers is  {0}" , sum);
+    Console.WriteLine("The Product of Two Numbers is  {0}" , product);
+    Console.WriteLine("The Division of Two Numbers is  {0}" , division);
+    Console.WriteLine("The Subraction of Two Numbers is  {0}" , subraction);
+    Console.WriteLine("The Remainder is  {0}" , remainder);
+    }
+}
+
+
+
+
+// 2) Create an application that will find the greatest of 3 numbers
+
+using System;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Enter a first number");
+        int num1 = Convert.ToInt32(Console.ReadLine());
+        
+        Console.WriteLine("Enter a second number");
+        int num2 = Convert.ToInt32(Console.ReadLine());
+        
+        Console.WriteLine("Enter a third number");
+        int num3 = Convert.ToInt32(Console.ReadLine());
+        
+        if(num1>num2 && num1>num3)
+        Console.WriteLine("{0} is greater" , num1);
+        
+        else if(num2>num3)
+        Console.WriteLine("{0} is greater",num2);
+        
+        else
+        Console.WriteLine("{0} is greater" , num3);
+        
+        
+    }
+}
+
+//3) create an application that will find the greatest of the given numbers. Take input until the user enters a negative number
+
+static void Greatend()
+{
+ int i = 0,j=1,g=0;
+ while (i > -1)
+ {
+  i=Input($"{j}");
+  if(g<i)
+  {
+   g = i;
+  }
+  j++;
+ }
+ Console.WriteLine($"The greatest number is {g}");
+}
+
+//4) Find the average of all the numbers that are divisible by 7.
+//Take input until the user enters a negative number
+
+static void Avgend()
+{
+ int i = 0, j = 1, g = 0,k=0;
+ while (i > -1)
+ {
+  i = Input($"{j}");
+  if (i>0 && i%7==0)
+  {
+   g=g+i;
+   k++;
+  }
+  j++;
+ }
+ Console.WriteLine($"The Average of the numbers is {Math.Round(((double)g / k),2)}");
+}
+
+//5) Find the length of user name
+
+using System;
+					
+class Program
+{
+	static void Main(string[] args)
+	{
+        Console.WriteLine("Please Enter a Name");
+        string name= Console.ReadLine();
+        int len = name.Length;
+        Console.WriteLine("The length of the name is {0}" , len);
+	}
+}
+
+
+
+//6) Create a application that will take username and password from user. check if username is "ABC" and passwords is "123".
+//Print error message if username or password is wrong
+//Allow user 3 attempts.
+//After 3rd attempt if user enters invalid credentials then print msg to intimate user that he/she has exceeded the number of attempts and stop
+
+using System;
+					
+public class Program
+{
+	public static void Main()
+	{
+	
+	for(int i=0 ;i<3;i++)
+	{
+	Console.WriteLine("Enter Username:");
+	string user = Console.ReadLine();
+	
+	Console.WriteLine("Enter Password");
+	string pwd = Console.ReadLine();
+		
+	if(user=="ABC" && pwd=="123")
+	Console.WriteLine("Congratulations you are In....");
+		
+	else
+		Console.WriteLine("Username and Password are incorrect");
+		
+	}
+	Console.WriteLine("You Exceeded the limit for the day");
+		
+		
+	}
+}
+
+
+
+
+
+

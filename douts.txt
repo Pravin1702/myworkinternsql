@@ -1,0 +1,16 @@
+readkey()
+
+icompare
+
+internal
+
+get,set
+
+base
+
+
+
+
+Debug.mess.Message
+
+mess.StackTrace

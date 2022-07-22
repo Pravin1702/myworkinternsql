@@ -1,0 +1,204 @@
+using System;
+using CustomerManage;
+
+namespace Doctor
+{
+    class Program
+    {
+        void PrintMenu()
+        {
+            Console.WriteLine("Choose from option");
+            Console.WriteLine("1. Create Doctor");
+            Console.WriteLine("2. Print Doctor");
+            Console.WriteLine("3. Edit Doctor Experience");
+            Console.WriteLine("4. Edit Doctor Speciality");
+            Console.WriteLine("5. Sort in Experience and print");
+            Console.WriteLine("6. Exit");
+        }
+        void InteractWithDoctor()
+        {
+            MainDoctor doc = new MainDoctor();
+            int choice = 6;
+            do
+            {
+                PrintMenu();
+                while (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.WriteLine("Invalid entry. Please try again");
+                }
+                switch (choice)
+                {
+                    case 1:
+                        manage.AddDoctor();
+                        break;
+                    case 2:
+                        manage.PrintAllDoctor();
+                        break;
+                    case 3:
+                        manage.UpdateDoctorExperience();
+                        break;
+                    case 4:
+                        manage.UpdateDoctorSpeciality();
+                        break;
+                    case 5:
+                        manage.SortByExperience();
+                        break;
+                    case 6:
+                        Console.WriteLine("Exiting...");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Try again");
+                        break;
+                }
+            } while (choice != 6);
+        }
+        static void Main(string[] args)
+        {
+            Program program = new Program();
+            program.InteractWithDoctor();
+           
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Doctor
+{
+    interface class MainDoctor
+    {
+        public MainDoctor()
+        {
+           Doctor[] doctors = new Doctor[5];
+        }
+
+
+        public void AddDoctor()
+        {
+            for (int i = 0; i < doctors.Length; i++)
+            {
+                doctors[i] = new Doctor();
+                doctors[i].Id = 100 + i + 1;
+                doctors[i].TakeDoctorDetailsFromConsole();
+            }
+        }
+
+
+        public Doctor GetDoctorById(int id)
+        {
+            for (int i = 0; i < doctors.Length; i++)
+            {
+                if (doctors[i] != null)
+                {
+                    if (doctors[i].Id == id)
+                    {
+                        return doctors[i];
+                    }
+                }
+            }
+            return null;
+        }
+
+
+        private void PrintDoctor(Doctor Doctor)
+        {
+            Console.WriteLine("\n");
+            Console.WriteLine(customer);
+            Console.WriteLine("\n");
+        }
+
+
+
+        private int TakeDoctorIdFromUser()
+        {
+            int id = 0;
+            Console.WriteLine("Please enter the Doctor Id");
+            while (!int.TryParse(Console.ReadLine(), out id))
+            {
+                Console.WriteLine("Invalid entry for Id. Please try again");
+            }
+            return id;
+        }
+
+        internal void SortByExperience()
+        {
+            CompareTo(doctors);
+            Array.Sort(doctors);
+            foreach (var item in doctors)
+            {
+                Console.WriteLine(item);
+            }
+        }
+
+
+        public void PrintAllDoctor()
+        {
+            foreach (var item in customers)
+            {
+                if (item != null)
+                    PrintCustomer(item);
+            }
+        }
+
+
+        public void UpdateDoctorSpeciality()
+        {
+            int id = TakeCustomerIdFromUser();
+            Doctor doctor = GetDoctorById(id);
+            if (doctor != null)
+            {
+                Console.WriteLine("The doctor details are:");
+                PrintDoctor(doctor);
+                string spe;
+                phone = Console.ReadLine();
+                doctor.spe = spe;
+                Console.WriteLine("Speciality updated.....");
+                Console.WriteLine("Updated Doctor data");
+                PrintDoctor(doctor);
+            }
+            else
+            {
+                Console.WriteLine("No such Doctor");
+            }
+        }
+
+
+        public int CompareTo(Experience exp)
+        {
+            Doctor d=(doctor)exp;
+            return this.exp.CompareTo(d.exp);
+        }
+
+
+        public void UpdateDoctorExperience()
+        {
+            int id = TakeDoctorIdFromUser();
+            Doctor doctor = GetDoctorById(id);
+            if (doctor != null)
+            {
+                Console.WriteLine("The doctor details are:");
+                PrintDoctor(doctor);
+                double exp;
+                Console.WriteLine("Please enter the doctor updated Experience");
+                while (!double.TryParse(Console.ReadLine(), out exp))
+                {
+                    Console.WriteLine("Invalid entry for Experience. Please try again");
+                }
+                doctor.Exp = exp;
+                Console.WriteLine("Doctor Experience updated.....");
+                Console.WriteLine("Updated Doctors data");
+                PrintDoctor(doctor);
+            }
+            else
+            {
+                Console.WriteLine("No such Doctor");
+            }
+        }
+        
+    }
+}
+

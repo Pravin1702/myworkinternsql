@@ -1,0 +1,57 @@
+select * from gamelogin
+
+sp_help gamelogin
+
+create proc proc_getlogin
+as
+begin
+ select * from gamelogin
+end
+
+exec proc_getlogin
+
+create proc proc_getuser(@uid int,@uname varchar(20),@uage int,@upass varchar(20),@uword varchar(10))
+as
+begin
+insert into gamelogin values (@uid,@uname,@uage,@upass,@uword)
+end
+
+drop proc proc_getuser
+
+exec proc_getuser 101,'Jimu',21,'jimu21',null
+
+create proc proc_idfind
+as
+begin
+select count(id)'rollnumber' from gamelogin
+end
+
+create proc proc_wordcheck(@uname varchar(20),@pass varchar(20), @uword varchar(10) out )
+as
+begin
+	set @uword = (select gamewords from gamelogin where username = @uname and password = @pass)
+	if(@uword is null)
+	  set @uword = 'invalid'
+end
+
+declare
+@uword varchar(10)
+begin
+  exec proc_wordcheck 'Jimu', 'jimu21' , @uword out
+  print @uword
+end
+
+create proc proc_giveword(@uname varchar(20),@upass varchar(20),@uword varchar(10))
+as
+begin
+    update gamelogin set gamewords=@uword where username=@uname and password = @upass
+end
+
+declare
+@uword varchar(10)
+begin
+  exec proc_giveword 'Jimu', 'jimu21' ,'what'
+  print @uword
+end
+
+exec proc_getlogin

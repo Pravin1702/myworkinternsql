@@ -1,0 +1,38 @@
+using System;
+class HelloWorld {
+  static void Main() {
+    
+     /* Add addcus=new Add();
+      Print prtcus=new Print();
+      PrintAll pallcus=new PrintAll();
+      UpdatePhone updatp=new UpdatePhone();
+      UpdateAge upage=new UpdateAge();
+      Exit exit=new Exit();
+     */
+      
+    Console.WriteLine(" 1) Add customers \n 2) Print customer \n 3) Print all customers \n 4) Update customer phone \n 5) Update customer age \n 6) Exit");
+    Console.Write(" Enter the type number : ");
+    int type= Convert.ToInt32(Console.ReadLine());
+    
+    Switch(type)
+    {
+        case 1:
+        
+        case 2:
+        
+        case 3:
+        
+        case 4:
+        
+        case 5:
+        
+        case 6:
+        
+        default :
+        Console.WriteLine("Given input is rong");
+        break;
+    }
+    
+    
+  }
+}

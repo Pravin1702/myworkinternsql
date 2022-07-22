@@ -1,0 +1,111 @@
+select * from Employees
+select * from Customers
+
+--1
+select CategoryName,Description from Categories order by CategoryName
+
+--2
+select ContactName,CompanyName,ContactTitle,Phone from Customers order by Phone
+
+--3
+select FirstName,LastName,HireDate from Employees order by HireDate desc
+
+--4
+select OrderId,OrderDate,ShippedDate,CustomerID,Freight from Orders order by Freight desc
+
+--5.(select CompanyName,Fax,Phone,HomePage,Country from Suppliers  order by Country 
+--
+select CompanyName,Fax,Phone,HomePage,Country from Suppliers  order by CompanyName )
+
+--6
+select CompanyName,ContactName from Customers where city='Buenos Aires'
+
+--7
+select ProductName,UnitPrice,QuantityPerUnit from Products where Discontinued=1
+
+--8
+select Orderdate,ShippedDate,CustomerId,Freight from Orders where OrderDate='1997-05-19'
+
+--9
+select FirstName,LastName,Country from Employees where not  Country ='USA'
+
+--10
+select Employeeid,orderid,customerid,requireddate,shippeddate from Orders where RequiredDate<ShippedDate
+
+--11
+select City,CompanyName,ContactName from Customers where city like 'A%' or city like 'B%'
+
+--12
+select * from orders where Freight>500
+
+--13
+select ProductName,UnitsInStock,UnitsOnOrder,Reorderlevel from Products where ReorderLevel>0
+
+--14
+select CompanyName,ContactName,Fax from Customers where Fax is not null
+
+--15
+select FirstName,LastName from Employees where ReportsTo is null
+
+--16
+select companyname, contactname,fax from Customers order by CompanyName asc
+
+--17
+select city, companyname, contactname from Suppliers where (city like '%a%' or city like '%b%')  order by ContactName desc
+
+--19
+create a report that shows the product name and suppilerid for all products supplied by exotic liquids , grandmakelly's homestead and tokyo traders select * from products select s.SupplierID,p.ProductName,s.CompanyName from Suppliers s join Products p on s.SupplierID= p.ProductID where s.CompanyName in('Exotic Liquids','Tokyo Traders','Grandma Kellys Homestead') order by s.SupplierID
+
+--18
+select concat(firstname,' ',lastname) 'full name', birthdate from Employees where BirthDate='1950-02-19'
+
+--20
+select orderid,orderdate,shippostalcode from Orders where ShipPostalCode like '02389%'
+
+--21 
+select companyname,contactname,contacttitle from Customers where ContactTitle not like '%sales%'
+
+--22
+select concat(firstname,' ',lastname)'Full name',city from Employees where city not like '%Seattle%'
+
+--23
+select companyname,contacttitle,city,country from Customers where city !='Madrid%'
+
+--24
+select concat(FirstName,' ',LastName,'can be reached at X',Extension) as ContactInfo from Employees
+
+--25
+select UnitsInStock,UnitPrice,Sum(UnitPrice) as total,ROUND(sum(UnitPrice),1) as roundedp,ROUND(sum(UnitPrice),-1)  as roundeddown    from Products group by UnitsInStock,UnitPrice order by Sum(UnitPrice) DESC
+
+--27
+select firstname,lastname,month(birthdate)'month' from Employees
+
+--28
+select * from Customers where ContactTitle='Owner'
+
+--30
+select productName from Products p join Categories c on p.CategoryID=c.CategoryID where c.CategoryID=8
+
+--31
+select CompanyName from Suppliers s join Products p on s.SupplierID=p.SupplierID join Categories c on p.CategoryID=c.CategoryID where c.CategoryID=8
+
+--32
+select CompanyName from Suppliers s join Products p on s.SupplierID=p.SupplierID join Categories c on p.CategoryID=c.CategoryID where c.CategoryName='Seafood'
+
+--33
+select e.firstname,e.lastname,o.orderid from employees e join orders o on e.employeeid=o.employeeid  where o.shippeddate > o.requireddate group by e.firstname,e.lastname,o.orderid
+
+--34
+select p.productname,sum(d.quantity) as quantity from [order details] d join products pon d.productid=p.productid group by p.productname  having sum(d.quantity) < 200
+
+--35
+select c.companyname, count(c.customerid) as numberoforders from customers c join orders o  on o.customerid = c.customerid 
+where o.orderdate >= '1996-12-1' GROUP BY c.customerid,c.companyname having count(c.customerid) > 15;
+
+--36
+select companyname,orderid,sum(od.UnitPrice) from [order details] od join products p on od.productid=p.productid join suppliers s on p.supplierid=s.supplierid group by s.companyname,od.orderid having sum(od.unitprice) < 10000
+
+
+
+
+

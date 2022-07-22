@@ -1,0 +1,35 @@
+1.select * from authors
+
+2.select concat(au_lname,' ',au_fname) 'fullname' from authors
+
+3.select title  from titles where price<10
+
+4.select count(pub_id)  'no of publishers'  from  publishers group by city
+
+5.select pub_id,count(title) 'number of titles' from titles group by pub_id
+
+6.select title_id,sum(qty) 'total quantity' from sales group by title_id
+
+7.select title,ord_num from titles t join sales s on t.title_id=s.title_id 
+
+8.select pub_name,title from publishers p join titles t on  p.pub_id=t.pub_id
+
+9.select pub_name,sum(qty) 'total quantity' from publishers p join titles t on  p.pub_id=t.pub_id join sales s on t.title_id=s.title_id group by pub_name
+
+10.select  concat(au_lname,' ',au_fname) 'full name',title from authors join publishers on authors.city=publishers.city
+join titles on  publishers.pub_id=titles.pub_id
+
+11.select ord_num,qty,price,stor_address from sales s join stores st on s.stor_id=st.stor_id 
+join titles t on s.title_id=t.title_id 
+
+12.select fname,pub_name from employee join publishers on employee.pub_id=publishers.pub_id
+
+13.select pub_name,fname,minit,lname,job_id,job_lvl,p.pub_id,hire_date from employee  left  join publishers p on employee.pub_id=p.pub_id
+
+14.select pub_name ,min(hire_date)  'first employee hire date' from publishers p join employee e on p.pub_id=e.pub_id 
+group by pub_name
+
+15.select concat('au_lname',' ','au_fname') 'full name',avg(price)  'avg price' from authors a join publishers p on a.city=p.city 
+join titles t on p.pub_id=t.pub_id group by au_id
+
+

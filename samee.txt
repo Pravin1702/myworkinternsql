@@ -1,0 +1,481 @@
+using System;
+using UserBal;
+using GameUSerClass;
+using GameDalLip;
+
+namespace CowAndBull2
+{
+    public class Program
+    {
+        userBal userBal;
+        public Program()
+        {
+            userBal = new userBal();
+        }
+
+        void GameDisplay()
+        {
+            int n;
+            Console.WriteLine("=====================================================");
+            Console.WriteLine("Welcome to the GameManu ");
+            Console.WriteLine("1) Register \n2) Login ");
+            Console.WriteLine("=====================================================");
+            Console.WriteLine("Choose an option ");
+            try
+            {
+                n = Convert.ToInt32(Console.ReadLine());
+                if (n == 1)
+                {
+                    userBal.Register();
+                    userBal.Word();
+                }
+                else if (n == 2)
+                {
+                    User user = GetLogin();
+                    user = userBal.CheckLogin(user);
+                    if (user == null)
+                        Console.WriteLine("Invalid username or password");
+                    else
+                    {
+                        Console.WriteLine("=====================================================");
+                        Console.WriteLine("login successful");
+                        Console.WriteLine("=====================================================");
+                        userBal.Word();
+                    }
+
+                }
+                else
+                {
+                    Console.Write("Given input is wrong ");
+                    GameDisplay();
+
+                }
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine("Given input is Must to provide number");
+                GameDisplay();
+            }
+
+        }
+        private User GetLogin()
+        {
+            User user = new User();
+            Console.WriteLine("=====================================================");
+            Console.WriteLine("Enter the id number ");
+            try
+            {
+                user.Id = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine("Given input is Must number");
+                GameDisplay();
+            }
+            Console.WriteLine("Enter the password ");
+            user.Password = Console.ReadLine();
+            Console.WriteLine("=====================================================");
+            return user;
+        }
+
+        public static void Main(String[] arg)
+        {
+            Program program = new Program();
+            program.GameDisplay();
+            Console.ReadKey();
+
+        }
+    }
+}
+
+=============================================================================================================
+
+namespace GameUSerClass
+{
+    public class User
+    {
+        public string Name { get; set; }
+        public string Password { get; set; }
+        public int Id { get; set; }
+        public int Age { get; set; }
+        public string Login { get; set; }
+        public string word { get; set; }
+    }
+}
+
+=======================================================================================================================
+
+using UserBal;
+using GameDalLip;
+using GameUSerClass;
+
+namespace UserBal
+
+{
+    public class userBal
+    {
+        public static int id;
+        gamedal gamedl;
+        public userBal()
+        {
+            gamedl = new gamedal();
+        }
+
+        public void Register()
+        {
+            gamedl.InsertUserToTable();
+        }
+
+        public User CheckLogin(User user)
+        {
+            if (user.Id != 0 && user.Password != null)
+            {
+                id = user.Id;
+                string result = gamedl.Login(user);
+                if (result == "invalid")
+                {
+                    return null;
+                }
+
+                else
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        public void Word()
+        {
+            string check=gamedl.checklastword(id);
+            if (check == "noword")
+            {
+                Console.WriteLine("=====================================================");
+                Console.WriteLine("Find one word to success");
+                Console.WriteLine("=====================================================");
+            }
+            else
+            {
+                Console.WriteLine("=====================================================");
+                Console.WriteLine("Your last find word is (" + check + ")");
+                Console.WriteLine("=====================================================");
+            }
+            int n;
+            try
+            {
+                do
+                {
+                Console.WriteLine("=====================================================");
+                    Console.WriteLine("Welcome to the game");
+                    Console.WriteLine("1) Give Word");
+                    Console.WriteLine("2) Guess word");
+                    Console.WriteLine("3) Exit");
+                    Console.WriteLine("=====================================================");
+                    Console.WriteLine("Choose an option");
+                    n = Convert.ToInt32(Console.ReadLine());
+                    if (n == 1)
+                    {
+                        gamedl.Addword(); 
+                    }
+
+                    else if (n == 2)
+                    {
+                        userBal userbal = new userBal();
+                        userbal.game();
+
+                    }
+                    else if (n == 3)
+                    {
+                        Console.WriteLine("=====================================================");
+                        Console.WriteLine("Bye...Tata.....!");
+                        Console.WriteLine("=====================================================");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Given input is wrong");
+                        Word();
+                    }
+                } while (n != 3);
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine("=====================================================");
+                Console.WriteLine("OOPS.... Given value is Must Number");
+                Console.WriteLine("=====================================================");
+                Word();
+            }
+
+        }
+
+        public void game()
+        {
+            int Cows = 0, Bulls = 0, flag = 0;
+            int checkword;
+            checkword = gamedl.checkword();
+            if (checkword > 0)
+            {
+                string word = gamedl.Guess();
+                string str1 = word;
+                int len = str1.Length;
+                if (len == 4)
+                {
+
+                    str1 = str1.ToLower();
+                    Console.WriteLine("Enter the Gess Word ");
+                    do
+                    {
+                        String str2 = Console.ReadLine().ToLower();
+                        Cows = 0;
+                        Bulls = 0;
+                        flag = 0;
+                        for (int i = 0; i < len; i++)
+                        {
+                            if (str1[i] == str2[i])
+                            {
+                                Cows++;
+                                flag++;
+                                if (flag == len)
+                                {
+                                    gamedl.AddLasrword(id,str1);
+                                    gamedl.Delete(str1);
+                                    str1 = null;
+                                }
+                            }
+                            else
+                            {
+                                for (int j = 0; j < len; j++)
+                                {
+                                    if (str1[i] == str2[j])
+                                    {
+                                        Bulls++;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        Console.WriteLine("cows - " + Cows + "  bull - " + Bulls);
+                    } while (Cows != len);
+
+                }
+            }
+            else if (checkword == 0)
+            {
+                Console.WriteLine("=====================================================");
+                Console.WriteLine("There are not word to find \nFirst give word");
+                Console.WriteLine("=====================================================");
+                Word();
+
+            }
+            
+        }
+
+
+    }
+}
+
+===================================================================================================================================
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<connectionStrings>
+		<add name ="conn" connectionString ="Data source=DESKTOP-H5DBBMH\SQLSERVER2019;user id=sa;password=Indhu123@;Initial Catalog=Northwind"/>
+	</connectionStrings>
+</configuration>
+
+===============================================================================================================================================
+
+using System;
+using System.Linq;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Data;
+using GameUSerClass;
+
+namespace GameDalLip
+{
+    public class gamedal
+    {
+        User u = new User();
+        SqlConnection conn;
+        public gamedal()
+        {
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conn"].ConnectionString);
+        }
+
+        public void InsertUserToTable()
+        {
+            string word = "noword";
+            Console.WriteLine("=====================================================");
+            Console.WriteLine("Enter the name ");
+            u.Name = Console.ReadLine();
+            bool containsInt = u.Name.Any(char.IsDigit);
+            if (containsInt)
+            {
+                Console.WriteLine("Your UserName should not have Numeric characters");
+                u.Name = "";
+                InsertUserToTable();
+            }
+            Console.WriteLine("Enter your age ");
+            try
+            {
+                u.Age = Convert.ToInt32(Console.ReadLine());
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine("Given Age is Must be number");
+                InsertUserToTable();
+            }
+            u.Password = u.Name + "" + u.Age;
+            u.Id = 101 + Loginid();
+            Console.WriteLine("Welcome your password is your name and age together (" + u.Password +")");
+            Console.WriteLine("your id is " + u.Id);
+            SqlCommand cmdLogin = new SqlCommand();
+            cmdLogin.Connection = conn;
+            cmdLogin.CommandText = "proc_getuser";
+            cmdLogin.CommandType = CommandType.StoredProcedure;
+            cmdLogin.Parameters.AddWithValue("@uid", u.Id);
+            cmdLogin.Parameters.AddWithValue("@uname", u.Name);
+            cmdLogin.Parameters.AddWithValue("@uage", u.Age);
+            cmdLogin.Parameters.AddWithValue("@upass", u.Password);
+            cmdLogin.Parameters.AddWithValue("@uword", word);
+            conn.Open();
+            int result = cmdLogin.ExecuteNonQuery();
+            if (result > 0)
+            {
+                Console.WriteLine("User created");
+                Console.WriteLine("=====================================================");
+            }
+            conn.Close();
+
+        }
+
+        public int Loginid()
+        {
+            int temp;
+            SqlCommand cmd = new SqlCommand("proc_idfind");
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            temp = Int32.Parse(dr[0].ToString());
+            conn.Close();
+            return temp;
+        }
+
+        public string Login(User user)
+        {
+            string name = null;
+            SqlCommand cmdLogin = new SqlCommand();
+            cmdLogin.Connection = conn;
+            cmdLogin.CommandText = "LoginCheck";
+            cmdLogin.CommandType = CommandType.StoredProcedure;
+            cmdLogin.Parameters.Add("@uid", SqlDbType.Int);
+            cmdLogin.Parameters.Add("@upass", SqlDbType.VarChar, 20);
+            cmdLogin.Parameters.Add("@ustatus", SqlDbType.VarChar, 20);
+            cmdLogin.Parameters[0].Value = user.Id;
+            cmdLogin.Parameters[1].Value = user.Password;
+            cmdLogin.Parameters[2].Direction = ParameterDirection.Output;
+            if (conn.State == ConnectionState.Open)
+                conn.Close();
+            conn.Open();
+            cmdLogin.ExecuteScalar();
+            name = cmdLogin.Parameters[2].Value.ToString();
+            conn.Close();
+            return name;
+        }
+
+        public void Addword()
+        {
+            SqlCommand cmd = new SqlCommand("proc_giveword");
+            cmd.Connection = conn;
+            Console.WriteLine("Enter the Four letter word");
+            u.word = Console.ReadLine();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@uword", SqlDbType.VarChar, 10);
+            cmd.Parameters[0].Value = u.word;
+            conn.Open();
+            int result = cmd.ExecuteNonQuery();
+            if (result > 0)
+                Console.WriteLine("Word Insert successfully");
+            conn.Close();
+        }
+
+        public string Guess()
+        {
+            SqlCommand cmd = new SqlCommand("proc_gessword");
+            string word = "";
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@uword", word);
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            word = dr[0].ToString();
+            conn.Close();
+            u.word = word;
+            return word;
+        }
+
+        public void Delete(string str)
+        {
+            SqlCommand cmd = new SqlCommand("proc_delword");
+            string word = str;
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("uword", word);
+            int result = cmd.ExecuteNonQuery();
+            if (result > 0)
+                Console.WriteLine("You Find the word Sucessfully ");
+            conn.Close();
+        }
+
+        public int checkword()
+        {
+            int temp;
+            SqlCommand cmd = new SqlCommand("proc_checkword");
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            temp = Int32.Parse(dr[0].ToString());
+            conn.Close();
+            return temp;
+        }
+
+        public void AddLasrword(int id,string word)
+        {
+            SqlCommand cmd = new SqlCommand("proc_lastword");
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("uword",word);
+            cmd.Parameters.AddWithValue("uid",id);
+            int result = cmd.ExecuteNonQuery();
+            if (result > 0)
+                Console.WriteLine("");
+            conn.Close();
+        }
+
+        public string checklastword(int id)
+        {
+            string word = "";
+            User user = new User();
+            SqlCommand cmd = new SqlCommand("proc_checklastword");
+            cmd.Connection = conn;
+            conn.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("uid", id);
+            SqlDataReader dr = cmd.ExecuteReader();
+            dr.Read();
+            word=user.word = dr[0].ToString();
+            conn.Close();
+            return word;
+        }
+    }
+}
+
+==============================================================================================
+

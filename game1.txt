@@ -1,0 +1,204 @@
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+namespace game1
+{
+    class Program
+    {
+        public Program()
+        {
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conn"].ConnectionString);
+            Console.WriteLine("connected");
+        }
+        public void Display()
+        {
+            Console.WriteLine("Welcome to the Game");
+            Console.WriteLine("1) Register \n2) Login");
+            int key=Convert.ToInt32(Console.ReadLine());
+            if (key == 1)
+            {
+                Register reg = new Register();
+                reg.register();
+            }
+            else if (key == 2)
+            {
+                Login log = new Login();
+                log.login();
+            }
+            else
+                Console.WriteLine("Wrong input");
+        }
+
+        static void Main(string[] args)
+        {
+            Program p = new Program();
+            p.Display();
+            Console.ReadKey();
+            
+        }
+    }
+}
+
+=======================================================
+
+namespace game1
+{
+    class Register
+    {
+        public void register()
+        {
+            String name, password;
+            int age, id = 100;
+            Console.WriteLine("Please enter your name ");
+            name = Console.ReadLine();
+            Console.WriteLine("Please enter your age ");
+            age = Convert.ToInt32(Console.ReadLine());
+            password = name + "" + age;
+            Console.WriteLine("Welcome your password is your name and age together(" + password + ")");
+            id = id + 1;
+            Console.WriteLine("your id is " + id);
+            GameManu g1 = new GameManu();
+            g1.game();
+        }
+    }
+}   
+
+=================================================================
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace game1
+{
+    internal class Login
+    {
+        public void login()
+        {
+            int id = 101,id2;
+            String password = "tim22",password2;
+            Console.WriteLine("Please enter your id");
+            id2 = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please enter your password");
+            password2 = Console.ReadLine();
+            if(id==id2 && password==password2)
+            {
+                GameManu g1 = new GameManu();
+                g1.game();
+            }
+            else
+            {
+                Console.WriteLine("Increate passord or id");
+            }
+            
+        }
+    }
+}
+
+=========================================================================
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace game1
+{
+    internal class GameManu
+    {
+        
+        public void game()
+        {
+            int n;
+            Console.WriteLine("Welcome to the game");
+            Console.WriteLine("1) Give Word");
+            Console.WriteLine("2) Guess word");
+            Console.WriteLine("3) Exit");
+            Console.WriteLine("Choose an option");
+            n = Convert.ToInt32(Console.ReadLine());
+            if (n == 1)
+            {
+                GameManu g = new GameManu();
+                g.Getword();
+            }
+            else if (n == 2)
+            {
+                GameManu g = new GameManu();
+                g.Guessword();
+            }
+            else if (n == 3)
+            {
+                Console.Write("bye.....!!!");
+            }
+            else
+            {
+                Console.WriteLine("Wrong Input");
+                game();
+            }
+                
+        }
+
+        void Getword()
+        {
+            String gword;
+            Console.WriteLine("Please enter the word");
+            gword = Console.ReadLine();
+
+
+        }
+
+        void Guessword()
+        {
+            int Cows = 0, Bulls = 0,flag=0;
+            String str1 = "what";
+            int len = str1.Length;
+            str1 = str1.ToLower();
+            do
+            {
+                String str2 = Console.ReadLine().ToLower();
+                Cows = 0;
+                Bulls = 0;
+                flag = 0;
+                for (int i = 0; i < len; i++)
+                {
+                    if (str1[i] == str2[i])
+                    {
+                        Cows++;
+                        flag++;
+                        if(flag == len)
+                        {
+                            str1 = null;
+                        }
+                    }
+                    else
+                    {
+                        for (int j = 0; j < len; j++)
+                        {
+                            if (str1[i] == str2[j])
+                            {
+                                Bulls++;
+                                break;
+                            }
+                        }
+                    }
+                } Console.WriteLine("cows - " + Cows + "  bull - " + Bulls);
+            } while (Cows != len) ;
+
+        }
+    }
+}
+
+======================================================================================
+
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<connectionStrings>
+		<add name="conn" connectionString="Data source=DESKTOP-H5DBBMH\SQLSERVER2019;user id=sa;password=Indhu123@;Initial Catalog=Gamelogin"/>
+	</connectionStrings>
+</configuration>
+

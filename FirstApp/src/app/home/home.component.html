@@ -1,0 +1,12 @@
+<p>home works!</p>
+<h1>
+    {{name}}
+    <hr>
+    <input type="text" #uname (change)="updatename(uname.value)">
+    <hr>
+    <input [value]="name">
+    <hr>
+    <input [(ngModel)]="name">
+    <i [class]='changeClass' (click)="change()"></i>
+    
+</h1>

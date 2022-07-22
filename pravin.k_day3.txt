@@ -1,0 +1,45 @@
+1.select * from authors
+
+2.select concat(au_fname,' ',au_lname) 'full name' from authors
+
+3.select avg(price) 'average' ,sum(price) 'total' from titles  
+
+4.select avg(price) 'average'  from titles where pub_id=0736
+
+5.select * from titles where advance between 3200 and 5000
+
+6.select * from titles where type='psychology' or type='mod_cook'
+
+7.select * from titles where pubdate<='1991-06-09 00:00:00.000'
+
+8.select * from authors where au_fname like '%ca%' and au_lname like '%ca%' 
+
+9.select type,avg(price) as 'average' from titles group by type
+
+10.select pub_id,sum(price) 'average' from titles group by pub_id
+
+11.select type , min(pubdate) 'the first published title ' from titles
+ group by type
+
+
+12.select pub_id , sum(royalty) 'ttotal royalty' from titles
+ group by pub_id
+
+
+13.select title from titles order by pubdate
+
+ 
+14.select title from titles order by pub_id,price
+
+16.select title,royalty from titles where royalty in ( select avg(royalty)  from titles)
+
+17.select city , count(pub_id) '  pulisher' from publishers group by city having count(pub_id)>1
+
+
+18.select title_id, count(ord_num) 'total number of  title' from sales
+ group by title_id
+
+
+
+ 19.select ord_num, count(title_id) 'total number of titles in every order' from sales
+ group by ord_num
